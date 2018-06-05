@@ -1,0 +1,34 @@
+pkgname=switch-enet
+pkgver=54419133f97bebe30f5f7c0215ce7a4ac5487180
+pkgrel=1
+pkgdesc='ENet reliable UDP networking library'
+arch=('any')
+url='https://github.com/natinusala/enet'
+license=(MIT)
+options=(!strip libtool staticlibs)
+depends=()
+source=('https://github.com/natinusala/enet/archive/5441913.zip')
+
+sha256sums=('2de57195f05a2c732a130fbd253e46f6d08b2e08e3de997ec5a886f096d32669')
+
+build() {
+  cd enet-$pkgver
+  
+  autoreconf -vfi
+
+  source /opt/devkitpro/devkita64.sh
+  source /opt/devkitpro/switchvars.sh
+
+  ./configure --prefix=$PORTLIBS_PREFIX --host=aarch64-none-elf --disable-shared --enable-static
+  
+  make
+}
+
+package() {
+  cd enet-$pkgver
+
+  source /opt/devkitpro/devkita64.sh
+  source /opt/devkitpro/switchvars.sh
+
+  make DESTDIR="$pkgdir" install
+}

@@ -1,1 +1,3 @@
-# natinusala-switch-pkgs
+# switch-pkgs
+
+Switch packages for devkitpro pacman
