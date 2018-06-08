@@ -1,6 +1,6 @@
 pkgname=switch-wolfssl
 pkgver=34955bf739cf8b115b54faa6d0a7fe708d887611
-pkgrel=1
+pkgrel=2
 pkgdesc='wolfSSL (formerly CyaSSL) is a small, fast, portable implementation of TLS/SSL for embedded devices to the cloud.'
 arch=('any')
 url='http://www.wolfssl.com'
@@ -19,10 +19,7 @@ build() {
   source /opt/devkitpro/devkita64.sh
   source /opt/devkitpro/switchvars.sh
   
-  # opensslextra ?
-  # fastmath + TFM_TIMING_RESISTANT?
-
-  ./configure --prefix=$PORTLIBS_PREFIX --host=aarch64-none-elf --disable-shared --enable-static --enable-certgen --enable-keygen --enable-sslv3 CFLAGS="-DNO_DEV_RANDOM -DNO_WRITEV"
+  ./configure --prefix=$PORTLIBS_PREFIX --host=aarch64-none-elf --disable-examples --enable-harden --disable-shared --enable-static --enable-certgen --enable-opensslextra --enable-keygen --enable-sslv3 CFLAGS="-DNO_DEV_RANDOM -DNO_WRITEV -DTFM_TIMING_RESISTANT -fPIC"
   
   make src/libwolfssl.la
 }
@@ -33,5 +30,5 @@ package() {
   source /opt/devkitpro/devkita64.sh
   source /opt/devkitpro/switchvars.sh
 
-  make DESTDIR="$pkgdir" install src/libwolfssl.la
+  make DESTDIR="$pkgdir" install
 }
